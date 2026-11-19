@@ -42,7 +42,6 @@ public class ThirdPersonCamera : MonoBehaviour
         Mouse mouse = Mouse.current;
         if (mouse != null)
         {
-            // Bắt đầu giữ chuột trái: kiểm tra không đè lên nút UI (như nút Reset hay Icon tương tác)
             if (mouse.leftButton.wasPressedThisFrame)
             {
                 bool overUI = EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
@@ -54,10 +53,8 @@ public class ThirdPersonCamera : MonoBehaviour
                 isDraggingCamera = false;
             }
 
-            // Hold chuột trái và di chuyển chuột để xoay camera (New Input System)
             if (isDraggingCamera && mouse.leftButton.isPressed)
             {
-                // Mouse.delta trong New Input System trả về độ lệch pixel thực, nhân 0.1f để đồng bộ tốc độ với Sensitivity cũ
                 Vector2 mouseDelta = mouse.delta.ReadValue() * 0.1f;
                 yaw += mouseDelta.x * mouseSensitivity;
                 pitch -= mouseDelta.y * mouseSensitivity;
@@ -69,7 +66,6 @@ public class ThirdPersonCamera : MonoBehaviour
         Vector3 focusPoint = target.position + targetOffset;
         Vector3 desiredDirection = -(camRotation * Vector3.forward);
 
-        // Chống xuyên tường / vách ống thông gió bằng SphereCast 3D
         float finalDistance = distance;
         if (Physics.SphereCast(
                 focusPoint,
